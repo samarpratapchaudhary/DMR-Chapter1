@@ -1,0 +1,54 @@
+/* write a function reverse(s) that reverses the character string s. Use it too write a program that reverses its input a line at a time */
+#include <stdio.h>
+
+#define MAXLINE 1000   // maximum input line size
+
+int getlinex(char line[], int maxline);
+void reverse(char s[]);
+
+int main() {
+    char line[MAXLINE];
+
+    while (getlinex(line, MAXLINE) > 0) {
+        reverse(line);
+        printf("%s", line);
+    }
+
+    return 0;
+}
+
+// Read a line into s, return length
+int getlinex(char s[], int lim) {
+    int c, i;
+
+    for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+        s[i] = c;
+
+    if (c == '\n') {
+        s[i] = c;   // keep newline
+        ++i;
+    }
+
+    s[i] = '\0';
+    return i;
+}
+
+// Reverse string s in place
+void reverse(char s[]) {
+    int i, j;
+    char temp;
+
+    // find length
+    for (i = 0; s[i] != '\0'; i++);
+
+    // ignore newline at end if present
+    if (i > 0 && s[i - 1] == '\n')
+        --i;
+
+    j = i - 1;
+    for (int k = 0; k < i / 2; ++k) {
+        temp = s[k];
+        s[k] = s[j - k];
+        s[j - k] = temp;
+    }
+}
