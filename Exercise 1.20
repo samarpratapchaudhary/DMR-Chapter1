@@ -1,0 +1,32 @@
+/* Write a program detab that replaces tabs in the input with the proper number of blanks to space to the next tab stop.Assume a fixed set of tab stops, say every n columns. */
+#include <stdio.h>
+
+#define TABINC 8   // tab stop size (every 8 columns)
+
+int main() {
+    int c, pos;
+    int nb;   // number of blanks to insert
+
+    pos = 1;  // position counter starts at column 1
+
+    while ((c = getchar()) != EOF) {
+        if (c == '\t') {
+            nb = TABINC - ((pos - 1) % TABINC);  // spaces to next tab stop
+            while (nb > 0) {
+                putchar(' ');
+                ++pos;
+                --nb;
+            }
+        } 
+        else if (c == '\n') {
+            putchar(c);
+            pos = 1;  // reset column counter after newline
+        } 
+        else {
+            putchar(c);
+            ++pos;
+        }
+    }
+
+    return 0;
+}
