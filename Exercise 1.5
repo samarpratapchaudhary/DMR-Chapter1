@@ -1,0 +1,22 @@
+/* Modify the temperature conversion program to print thr table in reverse order, that is, from 300 degree to 0 */
+#include <stdio.h>
+
+int main() {
+    float celsius, fahrenheit;
+    int lower, upper, step;
+
+    lower = 300;      // lower limit of temperature
+    upper = 0;    // upper limit of temperature
+    step = 50;      // step size
+
+    printf("Celsius\tFahrenheit\n");
+
+    celsius = lower;
+    while (celsius >= upper) {
+        fahrenheit = (celsius * 9.0 / 5.0) + 32;
+        printf("%7.2f\t%10.2f\n", celsius, fahrenheit);
+        celsius = celsius - step;
+    }
+
+    return 0;
+}
