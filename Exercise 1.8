@@ -1,0 +1,25 @@
+/* Write a program to count blanks, tabs, and newlines */
+#include <stdio.h>
+
+int main() {
+    int c;
+    long blanks = 0, tabs = 0, newlines = 0;
+
+    printf("Type something (press Ctrl+D on Linux/Mac or Ctrl+Z on Windows to stop):\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ')
+            ++blanks;
+        else if (c == '\t')
+            ++tabs;
+        else if (c == '\n')
+            ++newlines;
+    }
+
+    printf("\nCounts:\n");
+    printf("Blanks   = %ld\n", blanks);
+    printf("Tabs     = %ld\n", tabs);
+    printf("Newlines = %ld\n", newlines);
+
+    return 0;
+}
