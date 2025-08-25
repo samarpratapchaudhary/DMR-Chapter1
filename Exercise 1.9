@@ -1,0 +1,20 @@
+/* Write a progran to copy its input to its output, replacing each string of one or more blanks by s single blank */
+#include <stdio.h>
+
+int main() {
+    int c;
+    int last_char = 0;   // To remember the previous character
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ') {
+            if (last_char != ' ') {   // Print only the first space in a sequence
+                putchar(c);
+            }
+        } else {
+            putchar(c);  // Print all non-space characters
+        }
+        last_char = c;   // Update previous character
+    }
+
+    return 0;
+}
