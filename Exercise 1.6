@@ -1,0 +1,19 @@
+/* Verify that the expression getchar() != EOF is 0 or 1 */
+#include <stdio.h>
+
+int main() {
+    int c;
+
+    // Ask user for input
+    printf("Type some characters and press Ctrl+D (Linux/Mac) or Ctrl+Z (Windows) to end:\n");
+
+    // Keep testing getchar() != EOF
+    while ((c = getchar()) != EOF) {
+        printf("Expression value: %d\n", (c != EOF));    // It Gives Expression value 1.
+    }
+
+    // When EOF is encountered value will be 0
+    printf("At EOF, expression value: %d\n", (c != EOF));
+
+    return 0;
+}
