@@ -1,0 +1,53 @@
+/* WAP to remove trailing blanks and tabs from each line of input and to delete entirely blank lines */
+#include <stdio.h>
+
+#define MAXLINE 1000   // maximum input line size
+
+int getlinex(char line[], int maxline);
+void rtrim(char line[]);
+
+int main() {
+    char line[MAXLINE];
+
+    while (getlinex(line, MAXLINE) > 0) {
+        rtrim(line); // remove trailing blanks and tabs
+        if (line[0] != '\0')  // skip completely blank lines
+            printf("%s\n", line);
+    }
+
+    return 0;
+}
+
+// Read a line into s, return its length
+int getlinex(char s[], int lim) {
+    int c, i;
+
+    for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+        s[i] = c;
+
+    if (c == '\n') {
+        s[i] = c;   // keep newline temporarily
+        ++i;
+    }
+
+    s[i] = '\0';
+    return i;
+}
+
+// Remove trailing blanks, tabs, and newline
+void rtrim(char s[]) {
+    int i;
+
+    // find string length
+    for (i = 0; s[i] != '\0'; ++i);
+
+    // move back before '\0'
+    --i;
+
+    // remove trailing spaces, tabs, and newline
+    while (i >= 0 && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
+        --i;
+
+    // put null terminator after last non-blank/tab char
+    s[i + 1] = '\0';
+}
