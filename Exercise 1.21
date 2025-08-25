@@ -1,0 +1,47 @@
+/* Write a program entab that replaces strings of blanks by the minimum number of tabs and blanks to achieve the same spacing. use the same tab stops as for detab. 
+when either a tab or a single blank would suffice to reach a tab stop, which should be given preference */
+#include <stdio.h>
+
+#define TABINC 8   // tab stop size (every 8 columns)
+
+int main() {
+    int c, pos;
+    int nb = 0;   // number of blanks collected
+    int nt = 0;   // number of tabs collected
+
+    pos = 1;  // position counter starts at column 1
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ') {
+            if (pos % TABINC != 0) {
+                // still within a tab stop → just count a blank
+                ++nb;
+            } else {
+                // reached a tab stop → convert collected blanks into a tab
+                nb = 0;
+                ++nt;
+            }
+            ++pos;
+        } 
+        else {
+            // output any pending tabs/blanks
+            while (nt > 0) {
+                putchar('\t');
+                --nt;
+            }
+            while (nb > 0) {
+                putchar(' ');
+                --nb;
+            }
+
+            putchar(c);
+
+            if (c == '\n')
+                pos = 1;  // reset at newline
+            else
+                ++pos;
+        }
+    }
+
+    return 0;
+}
