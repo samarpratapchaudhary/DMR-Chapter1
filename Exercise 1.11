@@ -1,0 +1,62 @@
+/* How would you test the word count program? What kind of input are most likely to uncover bugs if there are any? */
+The program usually assumes:
+
+A word is a sequence of characters separated by blanks, tabs, or newlines.
+
+Everything else is part of words.
+
+So we should test cases where spacing, punctuation, or newlines behave unusually.
+
+🔍 Test Cases
+1. Empty Input
+
+[no input at all]
+Expected: 0 lines, 0 words, 0 chars
+
+2. Only Whitespace
+      
+\t\t  
+\n\n
+(spaces, tabs, and newlines only)
+Expected:
+
+->Words = 0
+->Lines = (depends on number of \n)
+->Characters = total typed
+
+3. Single Word
+
+Hello
+Expected: 1 word, 1 line (if followed by \n), correct chars
+
+4. Multiple Words with Normal Spacing
+
+Hello world program
+Expected: 3 words, 1 line
+
+5. Multiple Words with Extra Spaces/Tabs
+
+Hello     world\t\tprogram
+Expected: Still 3 words, but tests handling of multiple blanks/tabs.
+
+6. Words Split Across Lines
+
+Hello
+world
+program
+Expected: 3 words, 3 lines
+
+7. Input with Punctuation
+
+Hello, world! This-is.one_word.
+Expected: Each separated by spaces = multiple words (depends if hyphen/underscore counted as part of word).
+
+8. Very Long Input (Stress Test)
+Feed a large file or thousands of characters to ensure no overflow or performance issues.
+
+✅ Most Bug-Uncovering Inputs:
+->Lots of consecutive spaces/tabs (to see if program wrongly counts them as words).
+->Empty input (to check if program crashes or gives wrong counts).
+->Whitespace-only input (to test word detection logic)
+->Words with punctuation (to test definition of word).
+->Newline at the end or not (some programs fail to count last line/word if no \n).
