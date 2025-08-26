@@ -1,0 +1,68 @@
+/* Write a program to check a C program for rudimentary syntax errors like unbalanced parentheses, brackets and braces.
+Don’t forget about quotes, both single and double, escape sequences, and comments. (This program is hard if you do it in full generality.) */
+#include <stdio.h>
+
+#define TRUE 1
+#define FALSE 0
+
+int main() {
+    int c;
+    int paren = 0, bracket = 0, brace = 0;  // counters
+    int in_single_quote = FALSE;
+    int in_double_quote = FALSE;
+    int in_comment = FALSE;
+    int prev = 0;
+
+    while ((c = getchar()) != EOF) {
+        // Handle entering/exiting comments
+        if (!in_single_quote && !in_double_quote) {
+            if (!in_comment && prev == '/' && c == '*') {
+                in_comment = TRUE;
+                c = 0; // ignore this char
+            } else if (in_comment && prev == '*' && c == '/') {
+                in_comment = FALSE;
+                c = 0; // ignore this char
+            }
+        }
+
+        if (in_comment) {
+            prev = c;
+            continue;  // skip everything inside comment
+        }
+
+        // Handle quotes (single/double)
+        if (c == '\'' && !in_double_quote && prev != '\\') {
+            in_single_quote = !in_single_quote;
+        } else if (c == '\"' && !in_single_quote && prev != '\\') {
+            in_double_quote = !in_double_quote;
+        }
+
+        // If not inside quotes, check for brackets
+        if (!in_single_quote && !in_double_quote) {
+            switch (c) {
+                case '(': paren++; break;
+                case ')': paren--; break;
+                case '[': bracket++; break;
+                case ']': bracket--; break;
+                case '{': brace++; break;
+                case '}': brace--; break;
+            }
+        }
+
+        prev = c;
+    }
+
+    // Report results
+    if (paren == 0 && bracket == 0 && brace == 0 && !in_single_quote && !in_double_quote && !in_comment) {
+        printf("No syntax errors found.\n");
+    } else {
+        if (paren != 0)   printf("Unbalanced parentheses.\n");
+        if (bracket != 0) printf("Unbalanced brackets.\n");
+        if (brace != 0)   printf("Unbalanced braces.\n");
+        if (in_single_quote) printf("Unterminated single quote.\n");
+        if (in_double_quote) printf("Unterminated double quote.\n");
+        if (in_comment) printf("Unterminated comment.\n");
+    }
+
+    return 0;
+}
