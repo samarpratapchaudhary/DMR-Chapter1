@@ -1,0 +1,65 @@
+/* Write a program to 'fold' long input lines into two or more shorter lines after the last non-blank character that occurs before the n-th column of input.
+Make sure your program does something intelligent with very long lines, and if there are no blanks or tabs before the specified column. */
+#include <stdio.h>
+
+#define MAXCOL 20   // fold line after this column
+#define TABINC 8    // tab stop size
+
+void print_chunk(char line[], int last);
+int find_blank(char line[], int pos);
+int new_pos(char line[], int pos);
+
+int main() {
+    int c, pos;
+    char line[MAXCOL];
+
+    pos = 0;   // current position in buffer
+
+    while ((c = getchar()) != EOF) {
+        line[pos] = c;
+        if (c == '\n') {
+            // flush the line as it is
+            print_chunk(line, pos);
+            pos = 0;
+        }
+        else if (++pos >= MAXCOL) {
+            // line too long → fold
+            int blank = find_blank(line, pos);
+
+            if (blank >= 0) {
+                // break line at last blank
+                print_chunk(line, blank);
+                pos = new_pos(line, pos - blank);
+            } else {
+                // no blank found → break at MAXCOL
+                print_chunk(line, pos);
+                pos = 0;
+            }
+        }
+    }
+    return 0;
+}
+
+/* print first `last` characters of line[] */
+void print_chunk(char line[], int last) {
+    for (int i = 0; i < last; i++)
+        putchar(line[i]);
+    putchar('\n');
+}
+
+/* find last blank before pos */
+int find_blank(char line[], int pos) {
+    while (--pos >= 0) {
+        if (line[pos] == ' ' || line[pos] == '\t')
+            return pos;
+    }
+    return -1;
+}
+
+/* shift leftover chars after fold to beginning */
+int new_pos(char line[], int pos) {
+    int i, j;
+    for (i = 0, j = pos; j < MAXCOL; i++, j++)
+        line[i] = line[j];
+    return i;
+}
